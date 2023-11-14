@@ -15,6 +15,8 @@ const socket = io(config.host);
 //connet to socket
 socket.on("connect", () => {
     console.log("Socket.io: connected");
+
+    //check if device is registered
     if(!config.registered) {
         console.log("Socket.io: waiting for device to be registered.");
     }
@@ -26,6 +28,8 @@ socket.on("connect", () => {
     socket.on("data", (data) => {
         console.log("Socket.io: data received");
         console.log(data);
+
+        flash(data.flash);
     });
 
     //listen for device to be registered
@@ -39,12 +43,23 @@ socket.on("connect", () => {
     
 });
 
+//
+
 //socket disconnected
 socket.on("disconnect", () => {
     console.log("Socket.io: disconnected");
 });
 
 
+//Put flash code here
+//flash led or something
+function flash(flash) {
+    if(flash) {
+        //flash led
+    } else {
+        //turn off led
+    }
+}
 
 
 async function loadConfig() {
