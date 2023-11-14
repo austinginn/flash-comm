@@ -12,7 +12,7 @@ const config = await loadConfig();
 //create socket
 const socket = io(config.host);
 
-//connet to socket
+//connect to socket
 socket.on("connect", () => {
     console.log("Socket.io: connected");
 
