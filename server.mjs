@@ -35,7 +35,7 @@ const __dirname = dirname(__filename);
 console.log("dirname", __dirname);
 
 // Serve static files from 'flash-comm-ui/dist' (VUE app)
-app.use(express.static(__dirname + '/flash-comm-ui/dist'));
+app.use(express.static(__dirname + '/dist'));
 
 // Socket.io server callbacks
 io.on("connection", (socket) => {
@@ -141,7 +141,7 @@ io.on("connection", (socket) => {
 
 // Catch-all route to serve 'index.html'
 app.get('*', (req, res) => {
-    res.sendFile(__dirname + '/flash-comm-ui/dist/index.html');
+    res.sendFile(__dirname + '/dist/index.html');
 });
 
 httpServer.listen(PORT, () => {

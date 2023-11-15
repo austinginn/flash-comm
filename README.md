@@ -1,38 +1,62 @@
-# Flash Comm
+# Flash-Comm Server
 
-Flash Comm is a web based take on the Clear-Com FL-7 call signal flasher.  This was project was created so that a person on stage could signal the Front of House engineer to get on comms.  While the described use case is very specific, this concept can be adapted to many other production communication scenerios. 
+### Installation
 
-## Table of Contents
+1. Clone repository to your device.
 
-- [Overview](#overview)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
+```sh
+git clone https://github.com/austinginn/flash-comm.git
+```
+2. Navigate to server directory.
+```sh
+cd flash-comm/server
+```
+3. Install dependencies
+    - Socket.io
+    - Express
+```sh
+npm install
+```
 
-## Overview
+### Web UI
+A precompiled web app is included in this repository and will run out of the box.  If you want to build the web UI from scratch, the repository can be found [here](www.github.com/).
 
-The Flash Comm repository contains a web server and a sample client implementation.  Both are written in JS for node.js. A specific README for each can be found in the corresponding folder.  The following provides a brief overview of Flash Comm.
+### Configuration
+The flash-comm server lets you define spaces in a spaces.json file. If you run the server before creating spaces.json, one will be created for you with generic space naming. You can always modify this in the future.
+1. Create a spaces.json file with at least one space.
+```sh
+touch spaces.json
+nano spaces.json
+```
+2. The spaces.json file should be formated like this:
+```JSON
+[
+    {
+        "id": "someUniqueID",
+        "name": "human readable space name",
+        "flash": false
+    },
+    {
+        "id": "someUniqueID2",
+        "name": "human readable space name 2",
+        "flash": false
+    },
+    ...
+]
+```
+3. A devices.json file is created on first run.  Edit this file if you need to modify a device or want to manually enter a device.
 
-Flash Comm uses a node.js server to disseminate signal/flash data to all connected clients using socket.io.  The server also hosts a Vue3 web application to provide a dashboard and call page for users.  Multiple signal/flash spaces can be added to the server.  In our environment we have a stage1, stage2 and production space to ensure the right communication channel is used.
+### Usage
+```sh
+npm start
+```
+By default the server runs on port 3000. You can pass a port as the first argument.
 
-The dashboard displays all configured spaces and their status.  When a device first trys to communicate with the Flash Comm server it generates a unique ID and then waits for it to be named and assigned in the dashboard.  After this initial setup the device will automatically join the assigned space. 
+```sh
+npm start --port=3001
+```
+In a production environment, use a process manager like PM2 to run the server.
 
-The call page provides a web based interface to toggle the signal/flash for a space.  To join a space navigate to http://serverIPAddress:3000/call/:space:
 
-## Contributing
-If you'd like to contribute to this project, please follow these guidelines:
 
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix.
-3. Make your changes and commit them.
-4. Push your changes to your fork.
-5. Create a pull request, describing your changes in detail.
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-MIT License
-
-## Contact
-Hey! My name is Austin.  I specialize in creating custom AVL Integration solutions. If you're interseted in collaborating you can reach me at [austinleeginn@gmail.com](mailto:austinleeginn@gmail.com).
