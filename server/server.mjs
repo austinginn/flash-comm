@@ -16,6 +16,7 @@ console.log("dirname", __dirname);
 //load spaces from spaces.json directly (experimental)
 // import spaces from "./spaces.json" assert { type: "json" };
 // import devices from "./devices.json" assert { type: "json" };
+
 //using fs
 import fs from "fs";
 const spaces = JSON.parse(fs.readFileSync("./spaces.json", "utf8"));
@@ -33,18 +34,21 @@ app.use(express.static(__dirname + '/flash-comm-ui/dist'));
 io.on("connection", (socket) => {
     console.log("a user connected");
 
+    //Device handshake
     socket.on("device", (id) => {
         //check if device exists in devices.json
         for(let i = 0; i < devices.length; i++) {
             if(devices[i].id == id) {
-                //device exists
+                //device exists so join to corresponding space
                 console.log(`Socket.io: device ${id} joining ${devices[i].space}`);
                 socket.join(devices[i].space);
                 return;
             }
         }
-        //device does not exist
+
+        //device does not exist in devices
         console.log(`Socket.io: device ${id} does not exist. Waiting for space assignment`);
+
         //check if in unregistered list
         for(let i = 0; i < unregistered.length; i++) {
             if(unregistered[i] == id) {
@@ -53,24 +57,27 @@ io.on("connection", (socket) => {
                 return;
             }
         }
+
+        //device not in unregistered list
+        //push to unregistered and emit to dashboard
         unregistered.push(id);
         io.emit("unregistered", unregistered);
     });
 
+    //Device registration
     socket.on("register", (data) => {
         //check if device exists in unregistered array
         for(let i = 0; i < unregistered.length; i++) {
             if(unregistered[i] == data.id) {
-                //device exists
+                //device exists push to array and write json
                 console.log(`Socket.io: device ${data.id} added to devices.json`);
                 devices.push(data);
                 writeToJsonFileSync("./devices.json", devices);
                 
-                //alert device
+                //alert device that it was registered
                 io.emit(data.id, data);
 
-                // socket.join(data.space);
-                // console.log(`Socket.io: device ${data.id} joing space ${data.space}`);
+                //remove from unregistered holding
                 unregistered.splice(i, 1);
                 io.emit("unregistered", unregistered);
                 return;
@@ -110,12 +117,10 @@ io.on("connection", (socket) => {
         console.log(`Socket.io: flash ${space}`);
         for (let i = 0; i < spaces.length; i++) {
             if (spaces[i].id == space) {
-                if (spaces[i].flash) {
-                    spaces[i].flash = false;
-                } else {
-                    spaces[i].flash = true;
-                }
+                //toggle flash
+                spaces[i].flash = spaces[i].flash ? false : true;
 
+                //emit flash data to space
                 io.to(space).emit("data", spaces[i]);
                 return;
             }
@@ -126,6 +131,7 @@ io.on("connection", (socket) => {
         console.log("user disconnected");
     });
 });
+
 // Catch-all route to serve 'index.html'
 app.get('*', (req, res) => {
     res.sendFile(__dirname + '/flash-comm-ui/dist/index.html');
@@ -136,7 +142,7 @@ httpServer.listen(3000, () => {
 });
 
 
-
+//Write data to .json
 function writeToJsonFileSync(path, data) {
     try {
       // Convert JavaScript object to JSON string

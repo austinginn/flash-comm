@@ -5,12 +5,12 @@
   "description": "flash comm server",
   "main": "server.mjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run": "node server.mjs"
   },
   "author": "Austin Ginn",
   "license": "ISC",
   "dependencies": {
-    "cors": "^2.8.5",
     "express": "^4.18.2",
     "socket.io": "^4.7.2"
   }
