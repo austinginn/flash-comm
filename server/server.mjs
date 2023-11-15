@@ -1,6 +1,6 @@
 //Node v14.0.0 or higher for top level await
 //Testing done on v20.8.1
-
+'use strict';
 import { Server } from "socket.io";
 import { createServer } from "http";
 import express from "express";
@@ -12,16 +12,6 @@ import JSONFileHandler from "./json-file-handler.mjs";
 const spacesFileHandler = new JSONFileHandler("./spaces.json");
 const devicesFileHandler = new JSONFileHandler("./devices.json");
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-console.log("dirname", __dirname);
-
-//init server
-const app = express();
-const httpServer = createServer(app);
-const io = new Server(httpServer);
-const PORT = process.env.npm_config_port || 3000;
-
 //load spaces.json
 const spaces = await loadSpaces();
 console.log("Spaces: ", spaces);
@@ -32,6 +22,17 @@ console.log("Devices: ", devices);
 
 //device holding area
 const unregistered = [];
+
+//init web server and socket.io
+const app = express();
+const httpServer = createServer(app);
+const io = new Server(httpServer);
+const PORT = process.env.npm_config_port || 3000;
+
+//init __dirname for serving statics
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+console.log("dirname", __dirname);
 
 // Serve static files from 'flash-comm-ui/dist' (VUE app)
 app.use(express.static(__dirname + '/flash-comm-ui/dist'));
