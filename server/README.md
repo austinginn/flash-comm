@@ -48,12 +48,12 @@ nano spaces.json
 
 ### Usage
 ```sh
-npm run
+npm start
 ```
 By default the server runs on port 3000. You can pass a port as the first argument.
 
 ```sh
-npm run --port=3001
+npm start --port=3001
 ```
 In a production environment, use a process manager like PM2 to run the server.
 

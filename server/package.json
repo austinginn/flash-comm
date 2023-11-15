@@ -6,7 +6,7 @@
   "main": "server.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "run": "node server.mjs"
+    "start": "node server.mjs"
   },
   "author": "Austin Ginn",
   "license": "ISC",

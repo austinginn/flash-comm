@@ -6,12 +6,13 @@ import { dirname } from "path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+console.log("dirname", __dirname);
 
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer);
 
-console.log("dirname", __dirname);
+const PORT = process.env.npm_config_port || 3000;
 
 //load spaces from spaces.json directly (experimental)
 // import spaces from "./spaces.json" assert { type: "json" };
@@ -137,8 +138,8 @@ app.get('*', (req, res) => {
     res.sendFile(__dirname + '/flash-comm-ui/dist/index.html');
 });
 
-httpServer.listen(3000, () => {
-    console.log("listening on *:3000");
+httpServer.listen(PORT, () => {
+    console.log(`listening on *:${PORT}`);
 });
 
 
