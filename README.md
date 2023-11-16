@@ -21,6 +21,9 @@ npm install
 ### Web UI
 A precompiled web app is included in this repository and will run out of the box.  If you want to build the web UI from scratch, the repository can be found [here](https://github.com/austinginn/flash-comm-ui).
 
+### Client Example
+Only one active repository currently for nodejs, found [here](https://github.com/austinginn/flash-comm-nodejs)
+
 ### Configuration
 The flash-comm server lets you define spaces in a spaces.json file. If you run the server before creating spaces.json, one will be created for you with generic space naming. You can always modify this in the future.
 1. Create a spaces.json file with at least one space.
